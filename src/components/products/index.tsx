@@ -11,7 +11,6 @@ function Products({ products, categories }: any) {
   const [categorySelected, setCategorySelect] = React.useState("");
 
   const handleSelectCategory = (cat: string) => setCategorySelect(cat);
-  console.log("select", categorySelected);
   const handleSearch = (queryProduct: string) => {
     queryProduct = queryProduct.toLowerCase();
 
@@ -30,10 +29,27 @@ function Products({ products, categories }: any) {
       setDataProducts(products);
     }
   };
+  const fetchProductByCategory = async () => {
+    const res = await fetch(
+      `https://fakestoreapi.com/products/category/${categorySelected}`
+    );
+    if (res.ok) return res.json();
+  };
 
   const handleNavigateToProductDetails = (id: any) => {
     router.push(`products/${id}`);
   };
+  React.useEffect(() => {
+    console.log("select", categorySelected);
+    if (categorySelected) {
+      const tt = fetchProductByCategory().then((res) => {
+        setDataProducts(res);
+      });
+    }
+
+    return () => {};
+  }, [categorySelected]);
+
   return (
     <div>
       <div className="flex w-full ">
@@ -52,7 +68,7 @@ function Products({ products, categories }: any) {
 
       <div className="container mx-auto px-4 py-8">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          {dataProducts.map((product: any) => {
+          {dataProducts?.map((product: any) => {
             return (
               <div
                 key={product?.id}
