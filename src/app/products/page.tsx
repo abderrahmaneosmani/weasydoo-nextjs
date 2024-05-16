@@ -2,7 +2,7 @@
 import Products from "@/components/products";
 import React from "react";
 
-async function getData() {
+async function getProducts() {
   const res = await fetch("https://fakestoreapi.com/products");
 
   if (!res.ok) {
@@ -11,12 +11,23 @@ async function getData() {
 
   return res.json();
 }
+
+async function getCategories() {
+  const res = await fetch("https://fakestoreapi.com/products/categories");
+
+  if (!res.ok) {
+    throw new Error("Failed to fetch categories");
+  }
+
+  return res.json();
+}
 async function page() {
-  const products = await getData();
+  const products = await getProducts();
+  const categories = await getCategories();
 
   return (
     <div className="flex flex justify-center items-start flex">
-      <Products products={products} />
+      <Products products={products} categories={categories} />
     </div>
   );
 }
