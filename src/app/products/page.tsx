@@ -25,11 +25,7 @@ async function page() {
   const products = await getProducts();
   const categories = await getCategories();
 
-  return (
-    <div className="flex flex justify-center items-start flex">
-      <Products products={products} categories={categories} />
-    </div>
-  );
+  return <Products products={products} categories={categories} />;
 }
 
 export default page;

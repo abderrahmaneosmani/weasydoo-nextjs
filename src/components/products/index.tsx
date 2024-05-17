@@ -51,33 +51,37 @@ function Products({ products, categories }: any) {
   }, [categorySelected]);
 
   return (
-    <div>
-      <div className="flex w-full ">
-        <input
-          type="text"
-          onChange={(e) => handleSearch(e?.target?.value)}
-          placeholder="search a product"
-          className="appearance-none border border-gray-300 rounded-md py-2 px-4 leading-tight focus:outline-none focus:border-blue-500"
-        />
-        <Dropdown
-          categories={categories}
-          handleSelect={handleSelectCategory}
-          category={categorySelected}
-        />
-      </div>
+    <div className="md:container md:mx-auto border-red-500">
+      <div>
+        <div className="flex w-full items-center justify-center mt-10 mb-10">
+          <input
+            type="text"
+            onChange={(e) => handleSearch(e?.target?.value)}
+            placeholder="search a product"
+            className="appearance-none border border-gray-300 rounded-md py-2 px-4 leading-tight focus:outline-none focus:border-blue-500"
+          />
+          <div className="px-2">
+            <Dropdown
+              categories={categories}
+              handleSelect={handleSelectCategory}
+              category={categorySelected}
+            />
+          </div>
+        </div>
 
-      <div className="container mx-auto px-4 py-8">
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          {dataProducts?.map((product: any) => {
-            return (
-              <div
-                key={product?.id}
-                onClick={() => handleNavigateToProductDetails(product?.id)}
-              >
-                <Product product={product} />
-              </div>
-            );
-          })}
+        <div className=" box-border mx-auto px-4 py-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            {dataProducts?.map((product: any) => {
+              return (
+                <div
+                  key={product?.id}
+                  onClick={() => handleNavigateToProductDetails(product?.id)}
+                >
+                  <Product product={product} />
+                </div>
+              );
+            })}
+          </div>
         </div>
       </div>
     </div>

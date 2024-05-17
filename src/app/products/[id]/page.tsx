@@ -13,7 +13,7 @@ async function page({ params }: any) {
   const product = await getProductById(params.id);
 
   return (
-    <div className="flex justify-center items-center  mt-40">
+    <div className="w-[300px] h-[200px] text-center mt-20">
       <Product product={product} />
     </div>
   );
