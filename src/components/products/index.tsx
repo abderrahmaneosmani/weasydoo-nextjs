@@ -69,19 +69,17 @@ function Products({ products, categories }: any) {
           </div>
         </div>
 
-        <div className=" box-border mx-auto px-4 py-8">
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            {dataProducts?.map((product: any) => {
-              return (
-                <div
-                  key={product?.id}
-                  onClick={() => handleNavigateToProductDetails(product?.id)}
-                >
-                  <Product product={product} />
-                </div>
-              );
-            })}
-          </div>
+        <div className="w-fit mx-auto grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 justify-items-center justify-center gap-y-20 gap-x-14 mt-10 mb-5">
+          {dataProducts?.map((product: any) => {
+            return (
+              <div
+                key={product?.id}
+                onClick={() => handleNavigateToProductDetails(product?.id)}
+              >
+                <Product product={product} />
+              </div>
+            );
+          })}
         </div>
       </div>
     </div>

@@ -1,4 +1,5 @@
 import Product from "@/components/products/Product";
+import ProductDetails from "@/components/products/ProductDetails";
 import React from "react";
 async function getProductById(id: number) {
   const res = await fetch(`https://fakestoreapi.com/products/${id}`);
@@ -13,8 +14,8 @@ async function page({ params }: any) {
   const product = await getProductById(params.id);
 
   return (
-    <div className="w-[300px] h-[200px] text-center mt-20">
-      <Product product={product} />
+    <div className="max-w-md mx-auto rounded-md overflow-hidden shadow-md hover:shadow-lg mt-20">
+      <ProductDetails product={product} />
     </div>
   );
 }
