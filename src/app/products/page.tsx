@@ -2,7 +2,7 @@
 import Products from "@/components/products";
 import React from "react";
 
-async function getProducts() {
+export async function getProducts() {
   const res = await fetch("https://fakestoreapi.com/products");
 
   if (!res.ok) {
