@@ -1,13 +1,36 @@
-import { getServerSession } from "next-auth";
+import Link from "next/link";
 
 export default async function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          w_easy_doo
-        </p>
-      </div>
+    <main className="w-full h-full ">
+      <section className="bg-gradient-to-br from-blue-500 to-pink-500 py-16 md:py-32">
+        <div className="container mx-auto px-4 md:px-8 text-center">
+          <h1 className="text-white font-bold text-4xl md:text-6xl leading-tight mb-6">
+            Welcome to our <br />
+            Store
+          </h1>
+
+          <p className="text-white text-lg md:text-2xl mb-12 mt-12">
+            Experience the magic of colors with our unique products and
+            services.
+          </p>
+          <Link href="/products">
+            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+              Shop Now
+            </button>
+          </Link>
+
+          <div className="mt-20">
+            <p className="text-white  md:text-2xl">
+              have you a count let connect
+            </p>
+            <br />
+            <Link href="/auth/login" className="mb-4">
+              <span className=" text-white font-bold text-xl">Login</span>
+            </Link>
+          </div>
+        </div>
+      </section>
     </main>
   );
 }

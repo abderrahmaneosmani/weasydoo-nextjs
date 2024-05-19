@@ -1,5 +1,5 @@
 import React from "react";
-import Rating from "../rating/Rating";
+import Rating, { RatingType } from "../rating/Rating";
 import { ProductType } from "./type";
 
 function ProductDetails({ product }: { product: ProductType }) {
@@ -22,7 +22,7 @@ function ProductDetails({ product }: { product: ProductType }) {
         <p className="text text-gray-600 mt-2">{product.description}</p>
 
         <div className="mt-2">
-          <Rating rating={product?.rating} />
+          <Rating rating={product?.rating as RatingType} />
         </div>
       </div>
     </div>

@@ -1,5 +1,5 @@
 import React from "react";
-type RatingType = {
+export type RatingType = {
   rate: number;
   count: number;
 };

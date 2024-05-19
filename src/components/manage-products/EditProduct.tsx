@@ -124,13 +124,13 @@ function EditableTableProduct({ products, isAdmin }: Props) {
                   <input
                     type="number"
                     className="border rounded py-1 px-2"
-                    value={row.rating.rate}
+                    value={row.rating?.rate}
                     onChange={(e) =>
                       handleChangeProduct(row.id, "rate", e.target.value)
                     }
                   />
                 ) : (
-                  row.rating.rate
+                  row.rating?.rate
                 )}
               </td>
               <td className="py-2 px-4">
@@ -138,13 +138,13 @@ function EditableTableProduct({ products, isAdmin }: Props) {
                   <input
                     type="number"
                     className="border rounded py-1 px-2"
-                    value={row.rating.count}
+                    value={row.rating?.count}
                     onChange={(e) =>
                       handleChangeProduct(row.id, "price", e.target.value)
                     }
                   />
                 ) : (
-                  row.rating.count
+                  row.rating?.count
                 )}
               </td>
               {isAdmin && (
@@ -159,14 +159,14 @@ function EditableTableProduct({ products, isAdmin }: Props) {
                   ) : (
                     <button
                       className="bg-gray-500 text-white py-1 px-3 rounded hover:bg-gray-600"
-                      onClick={() => handleEditClickProduct(row?.id)}
+                      onClick={() => handleEditClickProduct(row?.id as number)}
                     >
                       Edit
                     </button>
                   )}
                   <button
                     className="bg-red-500 text-white py-1 px-3 rounded hover:bg-red-600"
-                    onClick={() => handleDeleteProduct(row.id)}
+                    onClick={() => handleDeleteProduct(row.id as number)}
                   >
                     Delete
                   </button>

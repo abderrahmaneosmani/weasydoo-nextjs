@@ -1,9 +1,17 @@
 "use client";
 
+import { useMutation, useQuery } from "@tanstack/react-query";
 import React from "react";
+import { addProduct } from "../../../services/product-api";
+import { ProductType } from "../products/type";
 
 function AddProduct() {
   const [showForm, setShowForm] = React.useState(false);
+
+  const mutationProduct = useMutation({
+    mutationFn: async (pr: Omit<ProductType, "id">) => addProduct(pr),
+  });
+
   const toggleForm = () => {
     setShowForm(!showForm);
   };
@@ -11,12 +19,16 @@ function AddProduct() {
   const handleAddProduct = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formProduct = new FormData(event?.currentTarget);
-    const title = formProduct.get("title");
-    const price = formProduct.get("price");
-    const description = formProduct.get("description");
-    const category = formProduct.get("category");
+    const title = formProduct?.get("title") as string;
+    const price = formProduct?.get("price") as string;
+    const description = formProduct?.get("description") as string;
+    const category = formProduct?.get("category") as string;
+    const prod = { title, price: Number(price), category, description };
+    mutationProduct.mutate(prod);
 
-    console.log("title", { title, price, description, category });
+    if (mutationProduct.status === "success") {
+      setShowForm(false);
+    }
   };
 
   return (
@@ -44,6 +56,7 @@ function AddProduct() {
                     Title
                   </label>
                   <input
+                    required
                     type="text"
                     name="title"
                     id="title"
@@ -59,6 +72,7 @@ function AddProduct() {
                     Category
                   </label>
                   <input
+                    required
                     type="text"
                     name="category"
                     id="category"
@@ -74,11 +88,12 @@ function AddProduct() {
                     price
                   </label>
                   <input
-                    type="text"
+                    type="number"
                     name="price"
                     id="price"
                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-cyan-600 focus:border-cyan-600 block w-full p-2.5"
                     placeholder="enter a price"
+                    required
                   />
                 </div>
                 <div className="col-span-6 sm:col-span-3">
@@ -94,6 +109,7 @@ function AddProduct() {
                     id="description"
                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-cyan-600 focus:border-cyan-600 block w-full p-2.5"
                     placeholder="Electronics"
+                    required
                   />
                 </div>
               </div>
