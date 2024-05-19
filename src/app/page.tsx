@@ -22,11 +22,13 @@ export default async function Home() {
 
           <div className="mt-20">
             <p className="text-white  md:text-2xl">
-              have you a count let connect
+              Have you a count , let connect
             </p>
             <br />
             <Link href="/auth/login" className="mb-4">
-              <span className=" text-white font-bold text-xl">Login</span>
+              <span className=" text-blue-300 font-bold text-xl underline">
+                Login
+              </span>
             </Link>
           </div>
         </div>

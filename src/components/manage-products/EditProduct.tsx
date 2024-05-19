@@ -1,6 +1,9 @@
 "use client";
+
 import React, { useState } from "react";
 import { ProductType } from "../products/type";
+import { useMutation } from "@tanstack/react-query";
+import { deleteProduct, updateProduct } from "../../../services/product-api";
 
 type Props = {
   products: ProductType[];
@@ -8,6 +11,18 @@ type Props = {
 };
 
 function EditableTableProduct({ products, isAdmin }: Props) {
+  const [editingRowId, setEditingRowId] = useState<number | null>(null);
+
+  const mutationUpdateProduct = useMutation({
+    mutationFn: async (pr: ProductType) => updateProduct(pr),
+    onSuccess: () => {
+      setEditingRowId(null);
+    },
+  });
+  const mutationDeleteProduct = useMutation({
+    mutationFn: async (id: number) => deleteProduct(id),
+  });
+
   const [dataProducts, setDataProducts] = useState(products);
   const headers = [
     "ID",
@@ -19,7 +34,6 @@ function EditableTableProduct({ products, isAdmin }: Props) {
     "Count",
     "Actions",
   ];
-  const [editingRowId, setEditingRowId] = useState<number | null>(null);
 
   const handleEditClickProduct = (id: number) => {
     setEditingRowId(id);
@@ -38,11 +52,17 @@ function EditableTableProduct({ products, isAdmin }: Props) {
   };
 
   const handleDeleteProduct = (id: number) => {
-    if (window.confirm("Are you sure you want to delete this product ?")) {
+    mutationDeleteProduct.mutate(id);
+    if (mutationDeleteProduct.status === "success") {
       setDataProducts((prevData: any) =>
         prevData.filter((row: ProductType) => row.id !== id)
       );
     }
+  };
+
+  const handleUpdateProductById = (pr: ProductType) => {
+    mutationUpdateProduct.mutate(pr);
+    console.log("mutation", mutationDeleteProduct.data);
   };
 
   return (
@@ -152,7 +172,7 @@ function EditableTableProduct({ products, isAdmin }: Props) {
                   {editingRowId === row.id ? (
                     <button
                       className="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-600"
-                      onClick={() => setEditingRowId(null)}
+                      onClick={() => handleUpdateProductById(row)}
                     >
                       Save
                     </button>

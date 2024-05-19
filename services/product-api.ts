@@ -1,31 +1,33 @@
 import { ProductType } from "@/components/products/type";
 
 export const addProduct = async (product: Omit<ProductType, "id">) => {
-  const res = await fetch("https://fakestoreapi.com/products", {
+  const create_product = await fetch("https://fakestoreapi.com/products", {
     method: "POST",
     body: JSON.stringify(product),
   });
-  if (res.ok) return res.json();
+  if (create_product.ok) return create_product.json();
 };
-export const updateProduct = () => {
-  fetch("https://fakestoreapi.com/products/7", {
-    method: "PUT",
-    body: JSON.stringify({
-      title: "test product",
-      price: 13.5,
-      description: "lorem ipsum set",
-      image: "https://i.pravatar.cc",
-      category: "electronic",
-    }),
-  })
-    .then((res) => res.json())
-    .then((json) => console.log(json));
+export const updateProduct = async (product: ProductType) => {
+  const update_product = await fetch(
+    `https://fakestoreapi.com/products/${product.id}`,
+    {
+      method: "PUT",
+      body: JSON.stringify(product),
+    }
+  );
+  if (update_product.ok) {
+    return update_product.json();
+  }
 };
 
-export const deleteProduct = () => {
-  fetch("https://fakestoreapi.com/products/6", {
-    method: "DELETE",
-  })
-    .then((res) => res.json())
-    .then((json) => console.log(json));
+export const deleteProduct = async (id: number) => {
+  const delete_product = await fetch(
+    `https://fakestoreapi.com/products/${id}`,
+    {
+      method: "DELETE",
+    }
+  );
+  if (delete_product.ok) {
+    return delete_product.json();
+  }
 };
