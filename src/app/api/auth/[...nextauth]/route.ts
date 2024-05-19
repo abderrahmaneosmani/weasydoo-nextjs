@@ -1,19 +1,31 @@
 import NextAuth from "next-auth";
 
 import CredentialsProvider from "next-auth/providers/credentials";
+import { DataCredentialType } from "./type";
+import { jwtDecode } from "jwt-decode";
 
-const handler = NextAuth({
+const usersAdmin = [1, 3, 5];
+
+export const NextAuthOptions = {
   pages: {
     signIn: "/auth/login",
   },
   callbacks: {
-    async signIn() {
-      return true;
+    async redirect({ baseUrl }: any) {
+      return "/products/manage";
     },
-    async redirect({ baseUrl }) {
-      return baseUrl;
+    async jwt({ token, user }: any) {
+      if (user) {
+        const userFromDb = await fetch(
+          `https://fakestoreapi.com/users/${user.id}`
+        ).then((data) => data.json());
+        token.role = usersAdmin.includes(userFromDb?.id) ? "admin" : "user";
+        return token;
+      }
+      return token;
     },
-    async session({ session }) {
+    session({ session, token }: any) {
+      session.user.role = token.role;
       return session;
     },
   },
@@ -22,15 +34,12 @@ const handler = NextAuth({
     CredentialsProvider({
       name: "Credentials",
 
-      credentials: {
-        email: { label: "root", type: "text", placeholder: "" },
-        password: { label: "Password", type: "password" },
-      },
+      credentials: {},
       async authorize(credentials: any, req) {
         try {
           const { username, password } = credentials;
 
-          const dataCredentials: any = {
+          const dataCredentials: DataCredentialType = {
             username,
             password,
           };
@@ -45,8 +54,14 @@ const handler = NextAuth({
 
           const data = await response.json();
 
-          if (data && response.ok) {
-            return data?.token;
+          if (data && response?.ok) {
+            const decoded: any = jwtDecode(data?.token);
+            const user: any = {
+              id: Number(decoded?.sub),
+              name: decoded?.user,
+              token: data?.token,
+            };
+            return user;
           } else {
             return null;
           }
@@ -56,6 +71,9 @@ const handler = NextAuth({
       },
     }),
   ],
-});
+  secret: process.env.NEXTAUTH_SECRET,
+};
+
+const handler = NextAuth(NextAuthOptions);
 
 export { handler as GET, handler as POST };

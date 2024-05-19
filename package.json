@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@types/uuid": "^9.0.8",
+    "jwt-decode": "^4.0.0",
     "next": "14.2.3",
     "next-auth": "^4.24.7",
     "react": "^18",
