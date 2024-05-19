@@ -1,21 +1,23 @@
 import { NextAuthOptions } from "@/app/api/auth/[...nextauth]/route";
 import AddProduct from "@/components/manage-products/AddProduct";
 import EditProduct from "@/components/manage-products/EditProduct";
-import ListProducts from "@/components/manage-products/ListProduct";
 import React from "react";
 import { getServerSession } from "next-auth";
+import Product from "@/components/products/Product";
+import { getProducts } from "../page";
+
 async function page() {
   const session = await getServerSession(NextAuthOptions);
-
-  console.log("session wow", session);
+  const products = await getProducts();
+  const isAdmin = session?.user?.role === "admin";
 
   return (
     <div className=" py-20 ">
       <div className="text-2xl md:text-3xl font-bold">
-        {session?.user?.role === "admin" && <AddProduct />}
+        {isAdmin && <AddProduct />}
       </div>
       <div className="grid grid-cols-2 ">
-        <ListProducts />
+        <EditProduct products={products} isAdmin={isAdmin} />
       </div>
     </div>
   );

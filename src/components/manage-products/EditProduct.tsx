@@ -1,124 +1,183 @@
 "use client";
-
-import React from "react";
+import React, { useState } from "react";
 import { ProductType } from "../products/type";
 
-function EditProduct({ product }: { product: ProductType }) {
-  const [showForm, setShowForm] = React.useState(false);
-  const [formData, setFormData] = React.useState([]);
+type Props = {
+  products: ProductType[];
+  isAdmin: boolean;
+};
 
-  const toggleForm = () => {
-    setShowForm(!showForm);
+function EditableTableProduct({ products, isAdmin }: Props) {
+  const [dataProducts, setDataProducts] = useState(products);
+  const headers = [
+    "ID",
+    "Title",
+    "Description",
+    "Category",
+    "Price",
+    "Rate",
+    "Count",
+    "Actions",
+  ];
+  const [editingRowId, setEditingRowId] = useState<number | null>(null);
+
+  const handleEditClickProduct = (id: number) => {
+    setEditingRowId(id);
   };
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    console.log("change", event.target.value);
-    event.preventDefault();
-    const { name, value } = event.target;
-    setFormData((prevData) => ({ ...prevData, [name]: value }));
+
+  const handleChangeProduct = (
+    id: number,
+    field: string,
+    value: string | number
+  ) => {
+    setDataProducts((prevData: any) =>
+      prevData.map((row: ProductType) =>
+        row.id === id ? { ...row, [field]: value } : row
+      )
+    );
   };
-  const handleEdit = () => {
-    console.log("Updated product:", formData);
+
+  const handleDeleteProduct = (id: number) => {
+    if (window.confirm("Are you sure you want to delete this product ?")) {
+      setDataProducts((prevData: any) =>
+        prevData.filter((row: ProductType) => row.id !== id)
+      );
+    }
   };
 
   return (
-    <div>
-      <button
-        onClick={toggleForm}
-        className="text-white bg-cyan-600 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
-      >
-        Edit
-      </button>
-      {showForm && (
-        <form onSubmit={handleEdit}>
-          <div className="bg-white border border-4 rounded-lg shadow relative m-10">
-            <div className="flex items-start justify-between p-5 border-b rounded-t">
-              <h3 className="text-xl font-semibold">Edit product</h3>
-            </div>
+    <div className="container mx-auto p-4">
+      <div className="overflow-x-auto"></div>
+      <table className="min-w-full bg-white border border-gray-200">
+        <thead>
+          <tr className="bg-gray-100 border-b">
+            {headers.map((header) => (
+              <th key={header} className="py-2 px-4 text-left text-gray-600">
+                {header}
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {dataProducts.map((row: ProductType) => (
+            <tr key={row.id} className="border-b">
+              <td className="py-2 px-4">{row.id}</td>
+              <td className="py-2 px-4">
+                {editingRowId === row.id ? (
+                  <input
+                    type="text"
+                    className="border rounded py-1 px-2 w-full"
+                    value={row.title}
+                    onChange={(e) =>
+                      handleChangeProduct(row.id, "title", e.target.value)
+                    }
+                  />
+                ) : (
+                  row.title
+                )}
+              </td>
+              <td className="py-2 px-4">
+                {editingRowId === row.id ? (
+                  <input
+                    type="text"
+                    className="border rounded py-1 px-2"
+                    value={row.description}
+                    onChange={(e) =>
+                      handleChangeProduct(row.id, "description", e.target.value)
+                    }
+                  />
+                ) : (
+                  row.description
+                )}
+              </td>
+              <td className="py-2 px-4">
+                {editingRowId === row.id ? (
+                  <input
+                    type="text"
+                    className="border rounded py-1 px-2"
+                    value={row.category}
+                    onChange={(e) =>
+                      handleChangeProduct(row.id, "category", e.target.value)
+                    }
+                  />
+                ) : (
+                  row.category
+                )}
+              </td>
 
-            <div className="p-6 space-y-6">
-              <div className="grid grid-cols-6 gap-6">
-                <div className="col-span-6 sm:col-span-3">
-                  <label
-                    htmlFor="category"
-                    className="text-sm font-medium text-gray-900 block mb-2"
-                  >
-                    Title
-                  </label>
-                  <textarea
-                    onChange={(e: any) => handleChange(e)}
-                    name="title"
-                    id="title"
-                    rows={4}
-                    cols={50}
-                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-cyan-600 focus:border-cyan-600 block w-full p-2.5"
-                    placeholder="Electronics"
-                  />
-                </div>
-                <div className="col-span-6 sm:col-span-3">
-                  <label
-                    htmlFor="category"
-                    className="text-sm font-medium text-gray-900 block mb-2"
-                  >
-                    Category
-                  </label>
+              <td className="py-2 px-4">
+                {editingRowId === row.id ? (
                   <input
-                    onChange={handleChange}
-                    type="text"
-                    name="category"
-                    id="category"
-                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-cyan-600 focus:border-cyan-600 block w-full p-2.5"
-                    placeholder="category"
+                    type="number"
+                    className="border rounded py-1 px-2"
+                    value={row.price}
+                    onChange={(e) =>
+                      handleChangeProduct(row.id, "price", e.target.value)
+                    }
                   />
-                </div>
-                <div className="col-span-6 sm:col-span-3">
-                  <label
-                    htmlFor="category"
-                    className="text-sm font-medium text-gray-900 block mb-2"
-                  >
-                    price
-                  </label>
+                ) : (
+                  row.price
+                )}
+              </td>
+              <td className="py-2 px-4">
+                {editingRowId === row.id ? (
                   <input
-                    onChange={(e: any) => handleChange(e)}
-                    type="text"
-                    name="price"
-                    id="price"
-                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-cyan-600 focus:border-cyan-600 block w-full p-2.5"
-                    placeholder="enter a price"
+                    type="number"
+                    className="border rounded py-1 px-2"
+                    value={row.rating.rate}
+                    onChange={(e) =>
+                      handleChangeProduct(row.id, "rate", e.target.value)
+                    }
                   />
-                </div>
-                <div className="col-span-6 sm:col-span-3">
-                  <label
-                    htmlFor="category"
-                    className="text-sm font-medium text-gray-900 block mb-2"
-                  >
-                    description
-                  </label>
+                ) : (
+                  row.rating.rate
+                )}
+              </td>
+              <td className="py-2 px-4">
+                {editingRowId === row.id ? (
                   <input
-                    onChange={handleChange}
-                    value={product.description}
-                    type="text"
-                    name="description"
-                    id="description"
-                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-cyan-600 focus:border-cyan-600 block w-full p-2.5"
-                    placeholder="Electronics"
+                    type="number"
+                    className="border rounded py-1 px-2"
+                    value={row.rating.count}
+                    onChange={(e) =>
+                      handleChangeProduct(row.id, "price", e.target.value)
+                    }
                   />
-                </div>
-              </div>
-            </div>
-
-            <div className="p-6 border-t border-gray-200 rounded-b">
-              <button
-                className="text-white bg-cyan-600 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
-                type="submit"
-              >
-                Edit
-              </button>
-            </div>
-          </div>
-        </form>
-      )}
+                ) : (
+                  row.rating.count
+                )}
+              </td>
+              {isAdmin && (
+                <td className="py-2 px-4 space-x-2 flex ">
+                  {editingRowId === row.id ? (
+                    <button
+                      className="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-600"
+                      onClick={() => setEditingRowId(null)}
+                    >
+                      Save
+                    </button>
+                  ) : (
+                    <button
+                      className="bg-gray-500 text-white py-1 px-3 rounded hover:bg-gray-600"
+                      onClick={() => handleEditClickProduct(row?.id)}
+                    >
+                      Edit
+                    </button>
+                  )}
+                  <button
+                    className="bg-red-500 text-white py-1 px-3 rounded hover:bg-red-600"
+                    onClick={() => handleDeleteProduct(row.id)}
+                  >
+                    Delete
+                  </button>
+                </td>
+              )}
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 }
 
-export default EditProduct;
+export default EditableTableProduct;
