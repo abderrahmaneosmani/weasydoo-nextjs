@@ -3,12 +3,12 @@ import AddProduct from "@/components/manage-products/AddProduct";
 import EditProduct from "@/components/manage-products/EditProduct";
 import React from "react";
 import { getServerSession } from "next-auth";
-import { getProducts } from "../page";
 import { redirect } from "next/navigation";
+import { fetchProducts } from "../../../../services/product-api";
 
 async function page() {
   const session = await getServerSession(NextAuthOptions);
-  const products = await getProducts();
+  const products = await fetchProducts();
   const isAdmin = session?.user?.role === "admin";
   if (session === null) {
     redirect("/auth/login");

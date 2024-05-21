@@ -40,7 +40,6 @@ function Products({ products, categories }: any) {
     router.push(`products/${id}`);
   };
   React.useEffect(() => {
-    console.log("select", categorySelected);
     if (categorySelected) {
       const tt = fetchProductByCategory().then((res) => {
         setDataProducts(res);

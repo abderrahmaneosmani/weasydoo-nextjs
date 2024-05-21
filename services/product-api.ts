@@ -1,33 +1,93 @@
-import { ProductType } from "@/components/products/type";
+import axios from "axios";
+
+export type ProductType = {
+  id?: number;
+  title: string;
+  price: string;
+  description: string;
+  category: string;
+  image?: string;
+  rating?: RatingType;
+};
+export type RatingType = {
+  rate: number;
+  count: number;
+};
+
+export type CredentialType = {
+  username: string;
+  password: string;
+};
+export const loginUser = async ({
+  credential,
+}: {
+  credential: CredentialType;
+}) => {
+  const user = await axios.post(
+    "https://fakestoreapi.com/auth/login",
+    credential
+  );
+  if (user?.data) {
+    return user?.data;
+  }
+};
+
+export const fetchProducts = async () => {
+  const products = await axios.get("https://fakestoreapi.com/products");
+  if (products.data) {
+    return products.data;
+  }
+};
+
+export const fetchCategories = async () => {
+  const res = await axios.get("https://fakestoreapi.com/products/categories");
+
+  if (!res.data) {
+    throw new Error("Failed to fetch categories");
+  }
+
+  return res?.data;
+};
 
 export const addProduct = async (product: Omit<ProductType, "id">) => {
-  const create_product = await fetch("https://fakestoreapi.com/products", {
-    method: "POST",
-    body: JSON.stringify(product),
-  });
-  if (create_product.ok) return create_product.json();
+  try {
+    const create_product = await axios.post(
+      "https://fakestoreapi.com/products",
+      product
+    );
+    if (create_product.data) {
+      return create_product.data;
+    }
+  } catch (error) {
+    console.error("Error adding product:", error);
+    throw error;
+  }
 };
 export const updateProduct = async (product: ProductType) => {
-  const update_product = await fetch(
-    `https://fakestoreapi.com/products/${product.id}`,
-    {
-      method: "PUT",
-      body: JSON.stringify(product),
+  try {
+    const update_product = await axios.put(
+      `https://fakestoreapi.com/products/${product.id}`,
+      product
+    );
+    if (update_product.data) {
+      return update_product.data;
     }
-  );
-  if (update_product.ok) {
-    return update_product.json();
+  } catch (error) {
+    console.error("Error updating product:", error);
+    throw error;
   }
 };
 
 export const deleteProduct = async (id: number) => {
-  const delete_product = await fetch(
-    `https://fakestoreapi.com/products/${id}`,
-    {
-      method: "DELETE",
+  try {
+    const delete_product = await axios.delete(
+      `https://fakestoreapi.com/products/${id}`
+    );
+    if (delete_product.data) {
+      return delete_product.data;
     }
-  );
-  if (delete_product.ok) {
-    return delete_product.json();
+  } catch (error) {
+    console.error("Error deleting product:", error);
+    throw error;
   }
 };

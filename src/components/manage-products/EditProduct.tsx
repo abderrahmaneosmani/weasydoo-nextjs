@@ -27,6 +27,7 @@ function EditableTableProduct({ products, isAdmin }: Props) {
   const headers = [
     "ID",
     "Title",
+    "Image",
     "Description",
     "Category",
     "Price",
@@ -94,6 +95,25 @@ function EditableTableProduct({ products, isAdmin }: Props) {
                   />
                 ) : (
                   row.title
+                )}
+              </td>
+              <td className="py-2 px-4">
+                {editingRowId === row.id ? (
+                  <input
+                    type="text"
+                    className="border rounded py-1 px-2"
+                    value={row.description}
+                    onChange={(e) =>
+                      handleChangeProduct(row.id, "image", e.target.value)
+                    }
+                  />
+                ) : (
+                  <img
+                    src={row.image}
+                    alt={row.title}
+                    width={200}
+                    height={200}
+                  />
                 )}
               </td>
               <td className="py-2 px-4">
