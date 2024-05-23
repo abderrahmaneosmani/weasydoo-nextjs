@@ -9,7 +9,7 @@ function AddProduct() {
   const [showForm, setShowForm] = React.useState(false);
 
   const mutationProduct = useMutation({
-    mutationFn: async (pr: Omit<ProductType, "id">) => addProduct(pr),
+    mutationFn: async (pr: Omit<ProductType, "id">) => addProduct(pr as any),
   });
 
   const toggleForm = () => {

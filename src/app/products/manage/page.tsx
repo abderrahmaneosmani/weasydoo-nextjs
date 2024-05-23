@@ -1,4 +1,3 @@
-import { NextAuthOptions } from "@/app/api/auth/[...nextauth]/route";
 import AddProduct from "@/components/manage-products/AddProduct";
 import EditProduct from "@/components/manage-products/EditProduct";
 import React from "react";
@@ -6,6 +5,7 @@ import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import { fetchProducts } from "../../../../services/product-api";
 import SignOutComponent from "@/components/Singout";
+import { NextAuthOptions } from "@/app/api/auth/[...nextauth]/config";
 
 async function page() {
   const session = await getServerSession(NextAuthOptions);

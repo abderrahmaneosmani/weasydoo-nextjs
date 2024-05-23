@@ -14,7 +14,7 @@ function EditableTableProduct({ products, isAdmin }: Props) {
   const [editingRowId, setEditingRowId] = useState<number | null>(null);
 
   const mutationUpdateProduct = useMutation({
-    mutationFn: async (pr: ProductType) => updateProduct(pr),
+    mutationFn: async (pr: ProductType) => updateProduct(pr as any),
     onSuccess: () => {
       setEditingRowId(null);
     },
