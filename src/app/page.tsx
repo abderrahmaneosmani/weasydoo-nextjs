@@ -1,6 +1,10 @@
+import { getServerSession } from "next-auth";
 import Link from "next/link";
+import { NextAuthOptions } from "./api/auth/[...nextauth]/route";
 
 export default async function Home() {
+  const session = await getServerSession(NextAuthOptions);
+
   return (
     <main className="w-full h-full ">
       <section className="bg-gradient-to-br from-blue-500 to-pink-500 py-16 md:py-32">
@@ -19,18 +23,28 @@ export default async function Home() {
               Shop Now
             </button>
           </Link>
-
-          <div className="mt-20">
-            <p className="text-white  md:text-2xl">
-              Have you a count , let connect
-            </p>
-            <br />
-            <Link href="/auth/login" className="mb-4">
-              <span className=" text-blue-300 font-bold text-xl underline">
-                Login
-              </span>
-            </Link>
-          </div>
+          {session?.user ? (
+            <div className="mt-20">
+              <br />
+              <Link href="/products/manage" className="mb-4">
+                <span className=" text-blue-300 font-bold text-xl underline">
+                  Manage your products
+                </span>
+              </Link>
+            </div>
+          ) : (
+            <div className="mt-20">
+              <p className="text-white  md:text-2xl">
+                Have you a count , let connect
+              </p>
+              <br />
+              <Link href="/auth/login" className="mb-4">
+                <span className=" text-blue-300 font-bold text-xl underline">
+                  Login
+                </span>
+              </Link>
+            </div>
+          )}
         </div>
       </section>
     </main>
