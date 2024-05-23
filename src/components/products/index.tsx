@@ -41,7 +41,7 @@ function Products({ products, categories }: any) {
   };
   React.useEffect(() => {
     if (categorySelected) {
-      const tt = fetchProductByCategory().then((res) => {
+      fetchProductByCategory().then((res) => {
         setDataProducts(res);
       });
     }
