@@ -1,8 +1,21 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+
+
 
 ## Getting Started
 
-First, run the development server:
+## Step 1:
+clone the repository of project
+
+```bash
+git clone https://github.com/abderrahmaneosmani/weasydoo-nextjs.git
+```
+
+## Step 2 : 
+isntall dependencies with a package manager
+```bash
+npm  install 
+```
+then , run the development server:
 
 ```bash
 npm run dev
